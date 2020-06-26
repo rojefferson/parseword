@@ -9,7 +9,7 @@ class Venda:
       self.cliente = cliente
       self.cpfcnpj = cpfcnpj
       self.RGIE = RGIE
-      self.dataNascimento = dataInstalacao 
+      self.dataNascimento = dataNascimento 
       self.endereco =endereco
       self.bairro  = bairro
       self.cidadeUF  = cidadeUF

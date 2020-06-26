@@ -2,17 +2,10 @@ import os
 import docx
 from docx.oxml.ns import qn
 import mammoth
-import os
 from bs4 import BeautifulSoup
 from Conexao import Conexao
 from Venda import Venda
-import textract
 import re
-
-
-path = "/home/jefferson/Documentos/arquivos"
-arquivos =  os.listdir("/home/jefferson/Documentos/arquivos")
-
 
 def findChecked(text):
     retorno = []
@@ -33,7 +26,6 @@ def findChecked(text):
 def checkboxInsert(table):        
   listCheckbox = list([("categria",[]) ,("Pagamento",[]),("BotaoExtra",[])])
   for i, row in enumerate(table.rows):
-  # text = (cell.text for cell in row.cells)
     for cell in row.cells:
       for paragraph in cell.paragraphs:
         p = paragraph._element
@@ -89,18 +81,16 @@ def getVendaDoc(fullpath,table):
         parcelas = parcelasRE[0]
       if(len(qtdBotaoRE) > 0):
         qtdBotaoExtra = qtdBotaoRE[0]
-
       localVenda = alltr[18].findAll("p")[1].text
-      vendedorIndicacao = alltr[18].findAll("p")[0].text #pode ter erro
+      vendedorIndicacao = alltr[18].findAll("p")[1].text
       localInstalacao = alltr[19].findAll("p")[1].text
-      instalador = alltr[19].findAll("p")[3].text #erro 
+      instalador = alltr[19].findAll("p")[3].text  
       dataVenda = alltr[20].findAll("p")[1].text
       dataInstalacao = alltr[20].findAll("p")[3].text
       observacoeslist =  alltr[21].findAll("p")
       ob = ""
       for x in observacoeslist:
           ob = ob + ". " + x.text
-
       check = checkboxInsert(table)
       botaoExtra = "1" if check[2][1] == "1" else "0"
       teste = tuple(check[0])[1][3]
@@ -111,19 +101,16 @@ def getVendaDoc(fullpath,table):
 
 def main():
   path = "/home/jefferson/Documentos/arquivos"
-  arquivos =  os.listdir("/home/jefferson/Documentos/arquivos")
+  arquivos =  os.listdir(path)
+  con = Conexao()
   for arquivo in arquivos:
     fullpath = path + "/" +arquivo
     filename, file_extension = os.path.splitext(fullpath)
-    if file_extension == ".doc":
-      text = textract.process(fullpath)
-      print(text.text)
-    else:
+    if file_extension == ".docx":
       document = docx.Document(fullpath)
       table = document.tables[0]
       venda =  getVendaDoc(fullpath,table)
-      teste = 10
-
+      con.insertVenda(venda)
 
 main()
     
