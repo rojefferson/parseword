@@ -5,7 +5,7 @@ class Conexao:
       self.mydb = mysql.connector.connect(
       host="localhost",
       user="jeff",
-      password="123",
+      password="123@Abcd",
       database="BASE"
       )
  

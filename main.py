@@ -42,6 +42,11 @@ def removeTagStrong(tag):
     [x.extract() for x in tag.findAll('strong')]
     return tag.text
 
+def trataDataText(dataText):
+  dataArray = re.findall(r'\d+',dataText)
+  dataArray = list(reversed(dataArray))
+  retorno = "-".join(dataArray)
+  return retorno
 
 def getVendaDoc(fullpath,table):
    with open(fullpath, "rb") as docx_file:
@@ -55,8 +60,11 @@ def getVendaDoc(fullpath,table):
       linha = removeTagStrong(alltr[1].findAll("td")[1])
       cliente = alltr[3].findAll("p")[1].text
       CPFCNPJ =  alltr[4].findAll("p")[1].text
-      RGIE =  alltr[4].findAll("p")[3].text
-      dataNascimento = alltr[4].findAll("p")[5].text
+      RGIEre =   re.findall(r'\d+', alltr[4].findAll("p")[3].text)  
+      RGIE = ""
+      if (len(RGIEre) > 0):
+        RGIE = alltr[4].findAll("p")[3].text
+      dataNascimento =  trataDataText(str(alltr[4].findAll("p")[5].text))
       endereco = alltr[5].findAll("p")[1].text
       bairro   = alltr[6].findAll("p")[1].text
       cidadeUF = alltr[6].findAll("p")[3].text
@@ -71,12 +79,19 @@ def getVendaDoc(fullpath,table):
       placa = alltr[12].findAll("p")[3].text
       panico1 = alltr[13].findAll("p")[1].text
       panico2 = alltr[14].findAll("p")[1].text
-      valorRastreador =  alltr[16].findAll("p")[1].text
-      Valorbotao =  alltr[16].findAll("p")[3].text  
+      valorRastreadoRE=   re.findall(r'\d+',alltr[16].findAll("p")[1].text)
+      Valorbotao = ''
+      valorBotaoRE =   re.findall(r'\d+', alltr[16].findAll("p")[3].text)
+      if(len(valorBotaoRE) > 0):
+        Valorbotao = alltr[16].findAll("p")[3].text
       parcelasRE =  re.findall(r'\d+',alltr[17].findAll("p")[1].text)
       qtdBotaoRE =  re.findall(r'\d+',alltr[17].findAll("p")[3].text)
       parcelas = 0
       qtdBotaoExtra = 0
+
+      valorRastreador = 0
+      if (len(valorRastreadoRE) > 0):       
+        valorRastreador = valorRastreadoRE[0]
       if(len(parcelasRE)>0):
         parcelas = parcelasRE[0]
       if(len(qtdBotaoRE) > 0):
@@ -85,16 +100,14 @@ def getVendaDoc(fullpath,table):
       vendedorIndicacao = alltr[18].findAll("p")[1].text
       localInstalacao = alltr[19].findAll("p")[1].text
       instalador = alltr[19].findAll("p")[3].text  
-      dataVenda = alltr[20].findAll("p")[1].text
-      dataInstalacao = alltr[20].findAll("p")[3].text
+      dataVenda = trataDataText(str(alltr[20].findAll("p")[1].text))
+      dataInstalacao = trataDataText(str(alltr[20].findAll("p")[3].text))
       observacoeslist =  alltr[21].findAll("p")
       ob = ""
       for x in observacoeslist:
           ob = ob + ". " + x.text
       check = checkboxInsert(table)
       botaoExtra = "1" if check[2][1] == "1" else "0"
-      teste = tuple(check[0])[1][3]
-      teste = 10
       venda = Venda(contrato,chip,rastreador,linha,cliente,CPFCNPJ,RGIE,dataNascimento,endereco,bairro,cidadeUF,cep,telefoneResidencial,telefoneCelular,email,marca,modeloAno,cor,placa,panico1,panico2,valorRastreador,Valorbotao,localVenda,vendedorIndicacao,localInstalacao,instalador,dataVenda,dataInstalacao,ob,"0",tuple(check[1])[1][0],tuple(check[1])[1][1],tuple(check[1])[1][2],tuple(check[1])[1][3],tuple(check[1])[1][4],botaoExtra,qtdBotaoExtra,tuple(check[0])[1][0],tuple(check[0])[1][1],tuple(check[0])[1][2],tuple(check[0])[1][3],parcelas)
       return venda
 
