@@ -107,8 +107,35 @@ def getVendaDoc(fullpath,table):
       for x in observacoeslist:
           ob = ob + ". " + x.text
       check = checkboxInsert(table)
-      botaoExtra = "1" if check[2][1] == "1" else "0"
-      venda = Venda(contrato,chip,rastreador,linha,cliente,CPFCNPJ,RGIE,dataNascimento,endereco,bairro,cidadeUF,cep,telefoneResidencial,telefoneCelular,email,marca,modeloAno,cor,placa,panico1,panico2,valorRastreador,Valorbotao,localVenda,vendedorIndicacao,localInstalacao,instalador,dataVenda,dataInstalacao,ob,"0",tuple(check[1])[1][0],tuple(check[1])[1][1],tuple(check[1])[1][2],tuple(check[1])[1][3],tuple(check[1])[1][4],botaoExtra,qtdBotaoExtra,tuple(check[0])[1][0],tuple(check[0])[1][1],tuple(check[0])[1][2],tuple(check[0])[1][3],parcelas)
+      tipoPagamento = ""
+      categoriaVeiculo = ""
+
+      if tuple(check[0])[1][0] == '1':
+        categoriaVeiculo = "CARRO"
+      elif tuple(check[0])[1][1] == '1':
+        categoriaVeiculo = "MOTO"
+      elif tuple(check[0])[1][2] == '1':
+        categoriaVeiculo = "CAMINHAO"
+      else:
+        categoriaVeiculo = "OUTROS"
+
+
+      #pagamento
+      if tuple(check[1])[1][0] == '1':
+        tipoPagamento = "DEBITO"
+      elif tuple(check[1])[1][1] == '1' :
+        tipoPagamento = "CREDITO"
+      elif  tuple(check[1])[1][2] == '1':
+        tipoPagamento = "ESPECIE"
+      elif tuple(check[1])[1][3] == '1' :
+        tipoPagamento = "FINANCIAMENTO"
+      else:
+        tipoPagamento = "OUTROS"
+
+      
+       
+      botaoExtra = "SIM" if check[2][1] == "1" else "NAO"
+      venda = Venda(contrato,chip,rastreador,linha,cliente,CPFCNPJ,RGIE,dataNascimento,endereco,bairro,cidadeUF,cep,telefoneResidencial,telefoneCelular,email,marca,modeloAno,cor,placa,panico1,panico2,valorRastreador,Valorbotao,localVenda,vendedorIndicacao,localInstalacao,instalador,dataVenda,dataInstalacao,ob,tipoPagamento,botaoExtra,qtdBotaoExtra,categoriaVeiculo,parcelas)
       return venda
 
 

@@ -1,7 +1,7 @@
 
 
 class Venda:
-    def __init__(self,contrato ,chip ,rastreador ,linha ,cliente ,cpfcnpj ,RGIE,dataNascimento ,endereco ,bairro ,cidadeUF ,cep ,telefoneResidencial ,telefoneCelular ,email ,marca ,modelo ,cor ,placa ,panico1 ,panico2 ,valorRastreador ,valorBotao ,localvenda ,vendendorIndicacao ,localInstalacao ,instalador ,dataVenda ,dataInstalacao ,observacoes ,parcelas ,PagamentoDebito ,PagamentoCredito ,PagamentoEspecie ,PagamentoFinanciamento ,PagamentoOutros ,BotaoExtra ,BotaoExtraQuantidade ,carro ,moto ,caminhao ,outros ,qtdParcelas):
+    def __init__(self,contrato ,chip ,rastreador ,linha ,cliente ,cpfcnpj ,RGIE,dataNascimento ,endereco ,bairro ,cidadeUF ,cep ,telefoneResidencial ,telefoneCelular ,email ,marca ,modelo ,cor ,placa ,panico1 ,panico2 ,valorRastreador ,valorBotao ,localvenda ,vendendorIndicacao ,localInstalacao ,instalador ,dataVenda ,dataInstalacao ,observacoes ,tipoPagamento ,BotaoExtra ,BotaoExtraQuantidade ,tipoVeiculo,qtdParcelas):
       self.contrato  = contrato
       self.chip  = chip
       self.rastreador = rastreador
@@ -32,16 +32,8 @@ class Venda:
       self.dataVenda = dataVenda
       self.dataInstalacao = dataInstalacao
       self.observacoes = observacoes
-      self.parcelas  = parcelas
-      self.PagamentoDebito = PagamentoDebito
-      self.PagamentoCredito = PagamentoCredito
-      self.PagamentoEspecie = PagamentoEspecie
-      self.PagamentoFinanciamento = PagamentoFinanciamento
-      self.PagamentoOutros =PagamentoOutros
+      self.tipoPagamento = tipoPagamento
       self.BotaoExtra = BotaoExtra
       self.BotaoExtraQuantidade =BotaoExtraQuantidade
-      self.carro = carro
-      self.moto = moto
-      self.caminhao = caminhao
-      self.outros = outros
+      self.tipoVeiculo = tipoVeiculo
       self.qtdParcelas=qtdParcelas
